@@ -1,6 +1,6 @@
 # Onedrive Destination
 
-This is the repository of the Airbyte destination connector for OneDrive, written in Python. It enables you to copy data from any source to you OneDrive Business.
+This is the repository of the Airbyte destination connector for OneDrive, written in Python. It enables you to copy data from any source to your OneDrive Business.
 OneDrive connector makes easy to integrate enterprise data with Microsoft powerful tool like Power BI and more.
 
 ## Local development
