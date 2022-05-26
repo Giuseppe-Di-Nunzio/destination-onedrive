@@ -2,7 +2,6 @@
 
 This is the repository for the Onedrive destination connector, written in Python. It enables you to copy data from any source to you OneDrive Business.
 OneDrive connector makes easy to integrate enterprise data with Microsoft powerful tool like Power BI and more.
-For information about how to use this connector within Airbyte, see [the documentation](https://docs.airbyte.io/integrations/destinations/onedrive).
 
 ## Local development
 
@@ -30,20 +29,7 @@ used for editable installs (`pip install -e`) to pull in Python dependencies fro
 If this is mumbo jumbo to you, don't worry about it, just put your deps in `setup.py` but install using `pip install -r requirements.txt` and everything
 should work as you expect.
 
-#### Building via Gradle
-From the Airbyte repository root, run:
-```
-./gradlew :airbyte-integrations:connectors:destination-onedrive:build
-```
 
-
-### Locally running the connector
-```
-python main.py spec
-python main.py check --config secrets/config.json
-python main.py discover --config secrets/config.json
-python main.py read --config secrets/config.json --catalog integration_tests/configured_catalog.json
-```
 
 ### Locally running the connector docker image
 
@@ -103,8 +89,4 @@ docker run --rm airbyte/destination-onedrive:dev spec
 docker run --rm -v $(pwd)/secrets:/secrets airbyte/destination-onedrive:dev check --config /secrets/config.json
 # messages.jsonl is a file containing line-separated JSON representing AirbyteMessages
 cat messages.jsonl | docker run --rm -v $(pwd)/secrets:/secrets -v $(pwd)/integration_tests:/integration_tests airbyte/destination-onedrive:dev write --config /secrets/config.json --catalog /integration_tests/configured_catalog.json
-```
-## Testing
-   Make sure to familiarize yourself with [pytest test discovery](https://docs.pytest.org/en/latest/goodpractices.html#test-discovery) to know how your test files and methods should be named.
-First install test dependencies into your virtual environment:
 ```
