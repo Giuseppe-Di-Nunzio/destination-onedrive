@@ -15,7 +15,7 @@
     "properties": {
       "authority": {
         "type": "string",
-        "description": "your tenant ID (please connect to your  Microsoft Azure Active Directory to get that)"
+        "description": "AAD URL plus your tenant ID (please connect to your  Microsoft Azure Active Directory to get that)"
        },
        "client_id": {
         "type": "string",
@@ -30,7 +30,8 @@
        "password": {
         "type": "string",
         "description": "your tenant password",
-        "examples" : ["super_secret_password"]
+        "examples" : ["super_secret_password"],
+        "airbyte_secret" :true
         },
        "folder": {
         "type": "string",
