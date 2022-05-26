@@ -63,12 +63,38 @@ Second, make sure you build the latest Docker image:
 docker build . -t airbyte/destination-onedrive:dev
 ```
 
-You can also build the connector image via Gradle:
-```
-./gradlew :airbyte-integrations:connectors:destination-onedrive:airbyteDocker
-```
-When building via Gradle, the docker image name and tag, respectively, are the values of the `io.airbyte.name` and `io.airbyte.version` `LABEL`s in
-the Dockerfile.
+#### Register your app in Azure Portal (https://portal.azure.com/)
+
+    Sign in to the Azure portal.
+    Select Azure Active Directory from the left nav.
+    Select App registrations from the new nav blade.
+
+Register the client app:
+
+    In App registrations page, select New registration.
+
+    When the Register an application page appears, enter your application's registration information:
+        In the Name section, enter a meaningful application name that will be displayed to users of the app, for example desktop-sample.
+        In the Supported account types section, select any option.
+
+
+    Select Register to create the application.
+
+    On the app Overview page, find the Application (client) ID value and use it later  in your connection setup as  client_id entry.
+
+    In *Authentication select the recommended Redirect URIs for public clients.
+
+    Then set the "Default Client Type: Treat application as a public client" to Yes and Save.
+
+    In the list of pages for the app, select API permissions
+        Click the Add a permission button and then,
+        Ensure that the Microsoft APIs tab is selected
+        In the Commonly used Microsoft APIs section, click on Microsoft Graph
+        In the Delegated permissions section, ensure that the right permissions are checked: Files.ReadWrite. Use the search box if necessary.
+        Select the Add permissions button
+
+    Permissions are now assigned correctly, but the very first time you run the connector, you'll get an error with an URL to click for getting signed-in user consent. Click on it to let the process flow.  
+     
 
 #### Run
 Then run any of the connector commands as follows:
@@ -82,45 +108,3 @@ cat messages.jsonl | docker run --rm -v $(pwd)/secrets:/secrets -v $(pwd)/integr
    Make sure to familiarize yourself with [pytest test discovery](https://docs.pytest.org/en/latest/goodpractices.html#test-discovery) to know how your test files and methods should be named.
 First install test dependencies into your virtual environment:
 ```
-pip install .[tests]
-```
-### Unit Tests
-To run unit tests locally, from the connector directory run:
-```
-python -m pytest unit_tests
-```
-
-### Integration Tests
-There are two types of integration tests: Acceptance Tests (Airbyte's test suite for all destination connectors) and custom integration tests (which are specific to this connector).
-#### Custom Integration tests
-Place custom tests inside `integration_tests/` folder, then, from the connector root, run
-```
-python -m pytest integration_tests
-```
-#### Acceptance Tests
-Coming soon: 
-
-### Using gradle to run tests
-All commands should be run from airbyte project root.
-To run unit tests:
-```
-./gradlew :airbyte-integrations:connectors:destination-onedrive:unitTest
-```
-To run acceptance and custom integration tests:
-```
-./gradlew :airbyte-integrations:connectors:destination-onedrive:integrationTest
-```
-
-## Dependency Management
-All of your dependencies should go in `setup.py`, NOT `requirements.txt`. The requirements file is only used to connect internal Airbyte dependencies in the monorepo for local development.
-We split dependencies between two groups, dependencies that are:
-* required for your connector to work need to go to `MAIN_REQUIREMENTS` list.
-* required for the testing need to go to `TEST_REQUIREMENTS` list
-
-### Publishing a new version of the connector
-You've checked out the repo, implemented a million dollar feature, and you're ready to share your changes with the world. Now what?
-1. Make sure your changes are passing unit and integration tests.
-1. Bump the connector version in `Dockerfile` -- just increment the value of the `LABEL io.airbyte.version` appropriately (we use [SemVer](https://semver.org/)).
-1. Create a Pull Request.
-1. Pat yourself on the back for being an awesome contributor.
-1. Someone from Airbyte will take a look at your PR and iterate with you to merge it into master.
