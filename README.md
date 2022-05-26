@@ -1,6 +1,7 @@
 # Onedrive Destination
 
-This is the repository for the Onedrive destination connector, written in Python.
+This is the repository for the Onedrive destination connector, written in Python. It enables you to copy data from any source to you OneDrive Business.
+OneDrive connector makes easy to integrate enterprise data with Microsoft powerful tool like Power BI and more.
 For information about how to use this connector within Airbyte, see [the documentation](https://docs.airbyte.io/integrations/destinations/onedrive).
 
 ## Local development
@@ -35,14 +36,6 @@ From the Airbyte repository root, run:
 ./gradlew :airbyte-integrations:connectors:destination-onedrive:build
 ```
 
-#### Create credentials
-**If you are a community contributor**, follow the instructions in the [documentation](https://docs.airbyte.io/integrations/destinations/onedrive)
-to generate the necessary credentials. Then create a file `secrets/config.json` conforming to the `destination_onedrive/spec.json` file.
-Note that the `secrets` directory is gitignored by default, so there is no danger of accidentally checking in sensitive information.
-See `integration_tests/sample_config.json` for a sample config file.
-
-**If you are an Airbyte core member**, copy the credentials in Lastpass under the secret name `destination onedrive test creds`
-and place them into `secrets/config.json`.
 
 ### Locally running the connector
 ```
@@ -55,7 +48,17 @@ python main.py read --config secrets/config.json --catalog integration_tests/con
 ### Locally running the connector docker image
 
 #### Build
-First, make sure you build the latest Docker image:
+First, be sure to include the following in the Dockerfile in order to build an alpine docker image with criptografy libraries.
+
+```
+RUN apk --no-cache upgrade \
+    && pip install --upgrade pip \
+    && apk --no-cache add tzdata build-base \
+    && apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo
+```
+  
+
+Second, make sure you build the latest Docker image:
 ```
 docker build . -t airbyte/destination-onedrive:dev
 ```
